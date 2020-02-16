@@ -1,11 +1,10 @@
 import 'cross-fetch/polyfill';
-import ApolloBoost, { gql } from 'apollo-boost';
+import { gql } from 'apollo-boost';
 import prisma from '../src/prisma';
 import seedDatabase from './utils/seedDatabase';
+import getClient from './utils/getClient';
 
-const client = new ApolloBoost({
-    uri: 'http://localhost:4000'
-});
+const client = getClient()
 
 beforeEach(seedDatabase);
 
@@ -53,22 +52,6 @@ test('should expose public author profiles', async () => {
     expect(response.data.users.length).toBe(1);
     expect(response.data.users[0].email).toBe(null);
     expect(response.data.users[0].name).toBe('Kate');
-});
-
-test('should only be able to get published posts', async () => {
-    const getPosts = gql`
-        query {
-            posts {
-                body
-                title
-                published
-            }
-        }
-    `;
-
-    const response = await client.query({ query: getPosts });
-    expect(response.data.posts.length).toBe(1);
-    expect(response.data.posts[0].published).toBe(true);
 });
 
 test('should not login with bad credentials', async () => {
