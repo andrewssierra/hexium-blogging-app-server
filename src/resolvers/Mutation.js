@@ -28,7 +28,7 @@ const Mutation = {
         if (!user.email) {
             throw new Error('Unable to login');
         }
-        const isMatch = bcrypt.compare(args.data.password, user.password);
+        const isMatch = await bcrypt.compare(args.data.password, user.password);
         if (isMatch) {
             return {
                 user,
