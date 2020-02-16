@@ -1,39 +1,13 @@
 import 'cross-fetch/polyfill';
 import ApolloBoost, { gql } from 'apollo-boost';
 import prisma from '../src/prisma';
-import bcrypt from 'bcryptjs';
+import seedDatabase from './utils/seedDatabase';
 
 const client = new ApolloBoost({
     uri: 'http://localhost:4000'
 });
 
-beforeEach(async () => {
-    await prisma.mutation.deleteManyPosts();
-    await prisma.mutation.deleteManyUsers();
-
-    await prisma.mutation.createUser({
-        data: {
-            name: 'Kate',
-            email: 'kate@test.com',
-            password: bcrypt.hashSync('test123$$$'),
-            posts: {
-                create: [
-                    {
-                        title:
-                            'Ten Beautiful Reasons We Can not Help But Fall In Love With Food.',
-                        body: 'food food food food',
-                        published: true
-                    },
-                    {
-                        title: 'Understanding The Background Of Food.',
-                        body: 'food food food food',
-                        published: false
-                    }
-                ]
-            }
-        }
-    });
-});
+beforeEach(seedDatabase);
 
 test('should create a new user', async () => {
     const createUser = gql`
@@ -97,15 +71,26 @@ test('should only be able to get published posts', async () => {
     expect(response.data.posts[0].published).toBe(true);
 });
 
-test('Should not login with bad credentials', async () => {
-
+test('should not login with bad credentials', async () => {
     const login = gql`
         mutation {
-            login(data: { email: "kate@test.com", password: "wrongpass!" }) {
+            login(data: { email: "kate@test.com", password: "wrongpassword" }) {
                 token
             }
         }
     `;
     await expect(client.mutate({ mutation: login })).rejects.toThrow();
-   
 });
+
+test('should not be able to sign up with short password', async ()=> {
+    const createUser = gql`
+        mutation{
+            createUser(data:{email:"test@123.com", password:"1234", name: "test"}){
+                token
+            }
+        }
+    `
+    await expect(client.mutate({mutation: createUser})).rejects.toThrow();
+})
+
+
