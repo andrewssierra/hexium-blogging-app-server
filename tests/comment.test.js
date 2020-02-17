@@ -1,8 +1,6 @@
 import 'cross-fetch/polyfill';
 import seedDatabase, {
     userOne,
-    postOne,
-    postTwo,
     commentOne,
     commentTwo
 } from './utils/seedDatabase';
@@ -28,7 +26,7 @@ test('should not be able to delete others comments', async () => {
     const variables = {
         id: commentOne.comment.id
     };
-    await client.mutate({ mutation: deleteComment, variables });
-    const exists = await prisma.exists.Comment({ id: commentOne.comment.id });
-    expect(exists).toBe(true);
+    await expect(
+        client.mutate({ mutation: deleteComment, variables })
+    ).rejects.toThrow();
 });
