@@ -24,7 +24,7 @@ const getUsers = gql`
 `;
 
 const login = gql`
-    mutation($data: LoginUserInput!) {
+    mutation($data: LogInUserInput!) {
         login(data: $data) {
             token
         }
@@ -91,6 +91,14 @@ const deletePost = gql`
     }
 `;
 
+const deleteComment = gql`
+    mutation($id: ID!) {
+        deleteComment(id: $id) {
+            id
+        }
+    }
+`;
+
 export {
     getProfile,
     login,
@@ -100,5 +108,6 @@ export {
     createPost,
     updatePost,
     getMyPosts,
-    getPosts
+    getPosts,
+    deleteComment
 };
