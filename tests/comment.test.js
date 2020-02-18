@@ -8,7 +8,6 @@ import getClient from './utils/getClient';
 import prisma from '../src/prisma';
 import { deleteComment } from './utils/operations';
 
-const client = getClient();
 beforeEach(seedDatabase);
 
 test('should delete own comment', async () => {
