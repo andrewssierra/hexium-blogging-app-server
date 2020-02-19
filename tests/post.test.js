@@ -7,12 +7,13 @@ import {
     createPost,
     updatePost,
     getMyPosts,
-    getPosts
+    getPosts,
+    subscribeToPost
 } from './utils/operations';
 
 const client = getClient();
-
 beforeEach(seedDatabase);
+
 test('should only return published posts', async () => {
     const response = await client.query({ query: getPosts });
     expect(response.data.posts.length).toBe(1);
@@ -67,4 +68,16 @@ test('should delete post', async () => {
     await client.mutate({ mutation: deletePost, variables });
     const exists = await prisma.exists.Post({ id: postTwo.post.id });
     expect(exists).toBe(false);
+});
+
+test('should subscribe to comments for post', async done => {
+    client.subscribe({ query: subscribeToPost }).subscribe({
+        next(response) {
+            expect(response.data.post.mutation).toBe('DELETED');
+            done();
+        }
+    });
+    await prisma.mutation.deletePost({
+        where: { id: postOne.post.id }
+    });
 });
