@@ -59,12 +59,14 @@ type Subscription {
 input UpdateUserInput {
     name: String
     email: String
+    profilePicture: String
     password: String
 }
 
 input CreateUserInput {
     name: String!
     email: String!
+    profilePicture: String
     password: String!
 }
 
@@ -96,6 +98,7 @@ type User {
     name: String!
     email: String
     password: String!
+    profilePicture: String
     posts: [Post!]!
     comments: [Comment]
     updatedAt: String

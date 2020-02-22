@@ -54,7 +54,7 @@ const Mutation = {
         return prisma.mutation.updateUser(
             {
                 where: { id: userId },
-                data: { name: args.data.name, email: args.data.email }
+                data: args.data
             },
             info
         );

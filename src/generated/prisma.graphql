@@ -1,5 +1,5 @@
-# source: https://hexium-blogging-app-f1746f8e41.herokuapp.com/blog-server/dev
-# timestamp: Fri Feb 21 2020 19:39:57 GMT-0800 (Pacific Standard Time)
+# source: http://192.168.99.100:4466
+# timestamp: Sat Feb 22 2020 11:57:29 GMT-0800 (Pacific Standard Time)
 
 type AggregateComment {
   count: Int!
@@ -1228,6 +1228,7 @@ type User implements Node {
   name: String!
   email: String!
   password: String!
+  profilePicture: String
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   updatedAt: DateTime!
@@ -1249,6 +1250,7 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
+  profilePicture: String
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
 }
@@ -1268,6 +1270,7 @@ input UserCreateWithoutCommentsInput {
   name: String!
   email: String!
   password: String!
+  profilePicture: String
   posts: PostCreateManyWithoutAuthorInput
 }
 
@@ -1276,6 +1279,7 @@ input UserCreateWithoutPostsInput {
   name: String!
   email: String!
   password: String!
+  profilePicture: String
   comments: CommentCreateManyWithoutAuthorInput
 }
 
@@ -1297,6 +1301,8 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
+  profilePicture_ASC
+  profilePicture_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -1308,6 +1314,7 @@ type UserPreviousValues {
   name: String!
   email: String!
   password: String!
+  profilePicture: String
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -1355,6 +1362,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  profilePicture: String
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
 }
@@ -1363,6 +1371,7 @@ input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
+  profilePicture: String
 }
 
 input UserUpdateOneRequiredWithoutCommentsInput {
@@ -1383,6 +1392,7 @@ input UserUpdateWithoutCommentsDataInput {
   name: String
   email: String
   password: String
+  profilePicture: String
   posts: PostUpdateManyWithoutAuthorInput
 }
 
@@ -1390,6 +1400,7 @@ input UserUpdateWithoutPostsDataInput {
   name: String
   email: String
   password: String
+  profilePicture: String
   comments: CommentUpdateManyWithoutAuthorInput
 }
 
@@ -1572,6 +1583,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
+  profilePicture: String
+
+  """All values that are not equal to given value."""
+  profilePicture_not: String
+
+  """All values that are contained in given list."""
+  profilePicture_in: [String!]
+
+  """All values that are not contained in given list."""
+  profilePicture_not_in: [String!]
+
+  """All values less than the given value."""
+  profilePicture_lt: String
+
+  """All values less than or equal the given value."""
+  profilePicture_lte: String
+
+  """All values greater than the given value."""
+  profilePicture_gt: String
+
+  """All values greater than or equal the given value."""
+  profilePicture_gte: String
+
+  """All values containing the given string."""
+  profilePicture_contains: String
+
+  """All values not containing the given string."""
+  profilePicture_not_contains: String
+
+  """All values starting with the given string."""
+  profilePicture_starts_with: String
+
+  """All values not starting with the given string."""
+  profilePicture_not_starts_with: String
+
+  """All values ending with the given string."""
+  profilePicture_ends_with: String
+
+  """All values not ending with the given string."""
+  profilePicture_not_ends_with: String
   updatedAt: DateTime
 
   """All values that are not equal to given value."""
