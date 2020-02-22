@@ -1,14 +1,12 @@
 import { GraphQLServer } from 'graphql-yoga';
 import prisma from './prisma';
 import { resolvers, fragmentReplacements } from './resolvers';
-import db from './db';
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
     resolvers,
     context(request) {
         return {
-            db,
             prisma,
             request
         };
@@ -16,4 +14,4 @@ const server = new GraphQLServer({
     fragmentReplacements
 });
 
-export {server as default}
+export { server as default };
